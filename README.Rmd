@@ -26,7 +26,7 @@ The main purpose of this package is for integration with typesafe APIs, such as 
 
 You can install the development version of typed like so:
 
-```r
+```{r, eval=FALSE}
 remotes::install_github('tmelliott/typed')
 ```
 
@@ -34,22 +34,108 @@ remotes::install_github('tmelliott/typed')
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```{r}
 library(typed)
 
 mean_double <- typed(mean,
-    list(x = "number[]"), value = "number")
+    list(x = "number[]"),
+    value = number()
+)
 mean_double
 mean_double(1:5)
 
-mean_char <- typed(mean, value = "string")
+mean_char <- typed(mean, value = string())
 mean_char
 mean_char(1:5)
 ```
 
 TypeScript definitions can be generated:
 
-```{r ts}
+```{r}
 compile(mean_double)
 compile(mean_char)
+```
+
+## Advanced demo
+
+Create array types using the `array_type()` function:
+
+```{r}
+random_numbers <- typed(runif,
+    list(n = "number"),
+    value = array_type(number())
+)
+random_numbers
+random_numbers(10)
+```
+
+Create union types using the `union()` function:
+
+```{r}
+flip_coins <- function(n) ifelse(runif(n) > 0.5, "heads", "tails")
+coin_tosses <- typed(flip_coins,
+  value = array_type(union(litteral("heads"), litteral("tails")))
+)
+coin_tosses
+coin_tosses(10)
+```
+
+Finally, complex object types can be defined using the `object()` function:
+
+```{r}
+person <- typed(
+  function(name, age, employed, gender) {
+    p <- list(name = name, age = age, employed = employed)
+    if (!missing(gender))
+      p$gender <- gender
+    p
+  },
+  value = object(
+    name = string(),
+    age = number(),
+    employed = boolean(),
+    gender = union(
+      litteral("male"),
+      litteral("female"),
+      litteral("other")
+    ) |> optional()
+  )
+)
+person
+person("Joe", round(runif(1, 20, 50)), TRUE)
+```
+
+It might be easier to define types for later use, or extension.
+
+```{r}
+date_type <- object(
+  year = number(),
+  month = number(),
+  day = number()
+)
+event_type <- object(
+  name = string(),
+  date = date_type,
+  attendees = optional(array_type(string()))
+)
+
+get_events <- typed(
+  function() {
+    list(
+      list(
+        name = "Birthday",
+        date = list(year = 2020, month = 1, day = 1),
+        attendees = c("Joe", "Jane")
+      ),
+      list(
+        name = "Christmas",
+        date = list(year = 2020, month = 12, day = 25),
+        attendees = c("Joe", "Jane", "Santa")
+      )
+    )
+  },
+  value = array_type(event_type)
+)
+get_events
+get_events()
 ```

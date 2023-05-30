@@ -12,7 +12,7 @@ compile.typed <- function(x, file = sprintf("%s.d.ts", fun_name)) {
     fun_name <- deparse(substitute(x))
     FunName <- snakecase::to_upper_camel_case(fun_name)
     cat(
-        sprintf("type %s_result = %s;",
+        sprintf("type %sResult = %s;",
             FunName,
             attr(x, "_returntype")
         ),

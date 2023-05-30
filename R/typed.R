@@ -44,13 +44,13 @@ print.typed <- function(x, ...) {
     arg_string <- paste(names(args), args,
         sep = ": ", collapse = ", ")
 
-    cat("typed function:",
+    cat("typed function ",
         paste0("(", arg_string, ")"),
-        "=>",
-        attr(x, "_returntype"),
-        "\n")
+        " => ",
+        attr(x, "_returntype")$type,
+        ";\n",
+        sep = "")
     print(attr(x, "_function"))
-    cat("\nReturn type: ", attr(x, "_returntype"), "\n")
     invisible(x)
 }
 
@@ -59,8 +59,5 @@ print.typed_result <- function(x, ...) {
     ok <- isTRUE(x$valid_type)
     print(x$value)
 
-    cat(sprintf("# %s type: %s",
-        ifelse(ok, "Valid", "Invalid"),
-        x$expected_type
-    ))
+    cat(sprintf("# %s type", ifelse(ok, "Valid", "Invalid")))
 }
