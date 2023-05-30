@@ -18,6 +18,7 @@ typed <- function(f, argtypes, value) {
         args <- as.list(mc[-1])
         result <- do.call(f, args)
         valid <- validate_types(result, value)
+        if (!valid) result <- list()
 
         structure(
             list(

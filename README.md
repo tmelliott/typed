@@ -38,7 +38,7 @@ mean_double
 #> typed function: (x: number[]) => number 
 #> function (x, ...) 
 #> UseMethod("mean")
-#> <bytecode: 0x564b8c567f28>
+#> <bytecode: 0x555cb4b110b0>
 #> <environment: namespace:base>
 #> 
 #> Return type:  number
@@ -51,12 +51,12 @@ mean_char
 #> typed function: (x: any) => string 
 #> function (x, ...) 
 #> UseMethod("mean")
-#> <bytecode: 0x564b8c567f28>
+#> <bytecode: 0x555cb4b110b0>
 #> <environment: namespace:base>
 #> 
 #> Return type:  string
 mean_char(1:5)
-#> [1] 3
+#> list()
 #> # Invalid type: string
 ```
 
@@ -64,7 +64,17 @@ TypeScript definitions can be generated:
 
 ``` r
 compile(mean_double)
-#> export function mean_double(x: number[]): number;
+#> type MeanDouble_result = number;
+#> export function mean_double(x: number[]): {
+#>   result: MeanDoubleResult | undefined;
+#>   valid_type: boolean;
+#>   expected_type: string;
+#> };
 compile(mean_char)
-#> export function mean_char(x: any): string;
+#> type MeanChar_result = string;
+#> export function mean_char(x: any): {
+#>   result: MeanCharResult | undefined;
+#>   valid_type: boolean;
+#>   expected_type: string;
+#> };
 ```
