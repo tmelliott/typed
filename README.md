@@ -38,7 +38,7 @@ mean_double
 #> typed function: (x: number[]) => number 
 #> function (x, ...) 
 #> UseMethod("mean")
-#> <bytecode: 0x557da8cd5670>
+#> <bytecode: 0x564b8c567f28>
 #> <environment: namespace:base>
 #> 
 #> Return type:  number
@@ -51,11 +51,20 @@ mean_char
 #> typed function: (x: any) => string 
 #> function (x, ...) 
 #> UseMethod("mean")
-#> <bytecode: 0x557da8cd5670>
+#> <bytecode: 0x564b8c567f28>
 #> <environment: namespace:base>
 #> 
 #> Return type:  string
 mean_char(1:5)
 #> [1] 3
 #> # Invalid type: string
+```
+
+TypeScript definitions can be generated:
+
+``` r
+compile(mean_double)
+#> export function mean_double(x: number[]): number;
+compile(mean_char)
+#> export function mean_char(x: any): string;
 ```

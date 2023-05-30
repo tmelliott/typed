@@ -46,3 +46,10 @@ mean_char <- typed(mean, value = "string")
 mean_char
 mean_char(1:5)
 ```
+
+TypeScript definitions can be generated:
+
+```{r ts}
+compile(mean_double)
+compile(mean_char)
+```

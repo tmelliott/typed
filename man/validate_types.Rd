@@ -4,7 +4,7 @@
 \alias{validate_types}
 \title{Check object x has valid type}
 \usage{
-validate_types(x, type)
+validate_types(x, type = "any")
 }
 \arguments{
 \item{x}{Object to check}
